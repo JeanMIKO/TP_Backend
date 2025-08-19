@@ -41,7 +41,6 @@ class TeacherNoteStudentView(generics.CreateAPIView):
 
         etu = get_object_or_404(Etudiant, pk=etudiant_pk)
 
-       
         serializer = self.get_serializer(data={
             'etudiant_id': etu.pk,
             'enseignant_id': ens.pk,
