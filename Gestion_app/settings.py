@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_gestion',
     'rest_framework',
     'drf_yasg',
     'django_filters',
+    'debug_toolbar',
+    'app_gestion',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Gestion_app.urls'
@@ -79,9 +81,9 @@ WSGI_APPLICATION = 'Gestion_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gestion',
-        'USER': 'jean',
-        'PASSWORD': 'softcare',
+        'NAME': 'gestions',
+        'USER': 'etudiant1',
+        'PASSWORD': '123456789',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -165,3 +167,8 @@ LOGGING = {
     },
 }
 
+INTERNAL_IPS = [
+
+    "127.0.0.1",
+
+]

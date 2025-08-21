@@ -6,7 +6,7 @@ from ..serializers import NoteSerializer
 
 class NoteListCreateView(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
-    queryset = Note.objects.all()
+    queryset = Note.objects.select_related('notes').all()
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):

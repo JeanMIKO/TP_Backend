@@ -6,7 +6,7 @@ from ..serializers import AttributionSerializer
 
 class AttributionListCreateView(generics.ListCreateAPIView):
     serializer_class = AttributionSerializer
-    queryset = Attribution.objects.all()
+    queryset = Attribution.objects.select_related('attributions').all()
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):

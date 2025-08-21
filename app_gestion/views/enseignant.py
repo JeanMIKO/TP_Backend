@@ -7,7 +7,7 @@ from ..serializers import EnseignantSerializer, EtudiantSerializer, NoteSerializ
 
 class EnseignantListCreateView(generics.ListCreateAPIView):
     serializer_class = EnseignantSerializer
-    queryset = Enseignant.objects.all()
+    queryset = Enseignant.objects.select_related('enseignant_profile').all()
     permission_classes = [permissions.AllowAny]
 
 class EnseignantRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
