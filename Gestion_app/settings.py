@@ -144,7 +144,7 @@ AUTH_USER_MODEL = 'app_gestion.Utilisateur'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 5
 }
 
 
