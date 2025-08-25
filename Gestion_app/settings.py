@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9_pqj_16pafn2@7b3*7k#p4^ru#o*)17qo-povq#2r7_c5bzo1'
+SECRET_KEY = config("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -40,6 +44,8 @@ INSTALLED_APPS = [
     'app_gestion',
     'rest_framework',
     'drf_yasg',
+    'django_filters',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -78,11 +84,11 @@ WSGI_APPLICATION = 'Gestion_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gestion',
-        'USER': 'jean',
-        'PASSWORD': 'softcare',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST"),
+        'PORT': config("DB_PORT"),
     }
 }
 
@@ -128,8 +134,49 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'app_gestion.Utilisateur'
+
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {'format': '{levelname} {asctime} {module} {message}', 'style': '{'},
+        'simple': {'format': '{levelname} {message}', 'style': '{'},
+    },
+    'handlers': {
+        'console': {'level': 'INFO', 'class': 'logging.StreamHandler', 'formatter': 'simple'},
+        'file': {'level': 'ERROR', 'class': 'logging.FileHandler', 'filename': 'django_error.log', 'formatter': 'verbose'},
+    },
+    'root': {'handlers': ['console'], 'level': 'WARNING'},
+    'loggers': {
+        'django': {'handlers': ['console', 'file'], 'level': 'INFO', 'propagate': False},
+        'django.db.backends': {'handlers': ['console'], 'level': 'ERROR', 'propagate': False},
+    },
 }

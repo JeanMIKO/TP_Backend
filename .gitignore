@@ -1,0 +1,32 @@
+# Fichiers sensibles
+.env
+.env.local
+.env.production
+db.sqlite3
+
+# Fichiers générés automatiquement
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Database
+*.db
+*.sqlite3
